@@ -99,7 +99,7 @@ test_y = np.array(test_y)
 
 #Start of EEGNet########################################################################
 def EEGNet(nb_classes, Samples = 128, Chans = 16,  #64 by default ask nao. #make nume
-#What is nb_classes?, number of chans =16 or is it 125 for the Hz like sentdex, samples = ? edit: I think 3 for directions (like sentdexes)
+#What is nb_classes? I think 3 for directions (like sentdexes), Yes ERP uses 4 for ears and visuals. Nao uses 4 for directions.
              dropoutRate = 0.5, kernLength = 64, F1 = 8,
              D = 2, F2 = 16, norm_rate = 0.25, dropoutType = 'Dropout'):
 ##ERP uses
@@ -146,7 +146,9 @@ def EEGNet(nb_classes, Samples = 128, Chans = 16,  #64 by default ask nao. #make
 
         return Model(inputs=input1, outputs=softmax)
 #end of eegnet####################################################
-model  = EEGNet(nb_classes = 3, Chans = 16, Samples = 128)# why do I need to call this again when the parameters are already set above?
+model = EEGNet(nb_classes = 3, Samples = 128, Chans = 16,  
+             dropoutRate = 0.5, kernLength = 64, F1 = 8,
+             D = 2, F2 = 16, norm_rate = 0.25, dropoutType = 'Dropout')
 
 model.compile(loss='categorical_crossentropy',
               optimizer='adam',
