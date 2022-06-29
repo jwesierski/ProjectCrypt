@@ -9,19 +9,19 @@ import os
 import random
 import tensorflow as tf
 
-
+#script being used to test a model and make new data. While the model is running it will be saving what you are thinking
 MODEL_NAME = "C:\\Users\\wesie\\OneDrive\\Desktop\\ProjectCrypt\\new_models\\41.3-acc-64x3-batch-norm-9epoch-1647915410-loss-4.97.model" # your model path here.
-
+#comes in chunks of 125-125 data points per channel, 16 channels. 16 channels of 125 data points. We keep cycling through that
 model = tf.keras.models.load_model(MODEL_NAME)
 reshape = (-1, 16, 60)
 model.predict( np.zeros((32,16,60)).reshape(reshape) )
 
 ACTION = 'left' # THIS IS THE ACTION YOU'RE THINKING
-
+#because of nyquist theory even though we get about 125 data ponts we only want to use 1/2
 FFT_MAX_HZ = 60
 
-HM_SECONDS = 10  # this is approximate. Not 100%. do not depend on this.
-TOTAL_ITERS = HM_SECONDS*25  # ~25 iters/sec
+HM_SECONDS = 10  # this is approximately 10 seconds of thinking this direction (though the stream ends up being closer to 40 for some reason)
+TOTAL_ITERS = HM_SECONDS*25  # ~25 iters means 25 frames of 125 datapoints from hz (truncated to 60). Each file holds these 25 seconds
 BOX_MOVE = "model"  # random or model
 
 last_print = time.time()
@@ -75,7 +75,7 @@ for i in range(TOTAL_ITERS):  # how many iterations. Eventually this would be a 
 
     cv2.imshow('', env)
     cv2.waitKey(1)
-
+#checking if we got action right or wrong
     network_input = np.array(channel_data).reshape(reshape)
     out = model.predict(network_input)
     print(out[0])
@@ -117,7 +117,7 @@ for i in range(TOTAL_ITERS):  # how many iterations. Eventually this would be a 
 datadir = "data"
 #if not os.path.exists(datadir):
 #    os.mkdir(datadir)
-
+#here we save the data
 actiondir = f"C:\\Users\\wesie\\OneDrive\\Desktop\\ProjectCrypt\\BCI-master\\data_V3\\{datadir}\\{ACTION}"
 if not os.path.exists(actiondir):
     os.mkdir(actiondir)
