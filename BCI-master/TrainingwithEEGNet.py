@@ -1,9 +1,10 @@
-#models import
-from EEGModels import EEGNet
+#imports from arl-eegmodels readme
+#from EEGModels import EEGNet
 from tensorflow.keras.models import Model
-from deepexplain.tensorflow import DeepExplain
+#from deepexplain.tensorflow import DeepExplain
 from tensorflow.keras import backend as K
-from tensorflow.keras.layers import Dense, Activation, Permute, Dropout
+
+#imports from eegnetfrom tensorflow.keras.layers import Dense, Activation, Permute, Dropout
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, AveragePooling2D
 from tensorflow.keras.layers import SeparableConv2D, DepthwiseConv2D
 from tensorflow.keras.layers import BatchNormalization
@@ -22,8 +23,10 @@ import os
 import random
 import time
 
+#This compares trains a model to which is saved in the new_models and is what we run testing against.
 #####Start of sentdex's data compilation#####################
 ACTIONS = ["left", "right", "none"]
+#reshape = (-1, 16, 128, 1)
 reshape = (-1, 16, 60)
 
 def create_data(starting_dir="D:\\Projects\\ProjectCrypt\\BCI-master\\data_V3\\data"):
@@ -98,8 +101,8 @@ test_y = np.array(test_y)
 
 
 #Start of EEGNet########################################################################
-def EEGNet(nb_classes, Samples = 128, Chans = 16,  #64 by default ask nao. #make nume
-#What is nb_classes?, number of chans =16 or is it 125 for the Hz like sentdex, samples = ? edit: I think 3 for directions (like sentdexes)
+def EEGNet(nb_classes = 3, Samples = 128, Chans = 16,  #64 by default ask nao. #make nume
+#What is nb_classes? I think 3 for directions (like sentdexes), Yes ERP uses 4 for ears and visuals. Nao uses 4 for directions.
              dropoutRate = 0.5, kernLength = 64, F1 = 8,
              D = 2, F2 = 16, norm_rate = 0.25, dropoutType = 'Dropout'):
 ##ERP uses
@@ -108,7 +111,7 @@ def EEGNet(nb_classes, Samples = 128, Chans = 16,  #64 by default ask nao. #make
 #               dropoutType = 'Dropout')
 
 
-        if dropoutType == 'SpatialDropout2D':
+        if dropoutType == 'SpatialDropout2D': #ccompare differences between dropouts
             dropoutType = SpatialDropout2D
         elif dropoutType == 'Dropout':
             dropoutType = Dropout
@@ -146,7 +149,9 @@ def EEGNet(nb_classes, Samples = 128, Chans = 16,  #64 by default ask nao. #make
 
         return Model(inputs=input1, outputs=softmax)
 #end of eegnet####################################################
-model  = EEGNet(nb_classes = 3, Chans = 16, Samples = 128)# why do I need to call this again when the parameters are already set above?
+model = EEGNet(nb_classes = 3, Samples = 128, Chans = 16,
+             dropoutRate = 0.5, kernLength = 64, F1 = 8,
+             D = 2, F2 = 16, norm_rate = 0.25, dropoutType = 'Dropout')
 
 model.compile(loss='categorical_crossentropy',
               optimizer='adam',

@@ -15,7 +15,7 @@ import time
 #Since some people wont be able to resist making a model on validation data...
 #I will use my own separate validation data to actually create scores. If you're not cheating, this shouldn't impact you ;)
 
-#This compares trains a model to which is sabed in the new_models and is what we run testing against
+#This compares trains a model to which is saved in the new_models and is what we run testing against
 
 # 6/27 I have run this out of my ProjectCypt file in my usb
 ACTIONS = ["left", "right", "none"]
