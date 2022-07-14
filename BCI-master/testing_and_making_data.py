@@ -14,6 +14,8 @@ MODEL_NAME = "C:\\Users\\wesie\\OneDrive\\Desktop\\ProjectCrypt\\new_models\\41.
 #comes in chunks of 125-125 data points per channel, 16 channels. 16 channels of 125 data points. We keep cycling through that
 model = tf.keras.models.load_model(MODEL_NAME)
 reshape = (-1, 16, 60)
+#reshape = (-1, 16, 128, 1)
+
 model.predict( np.zeros((32,16,60)).reshape(reshape) )
 
 ACTION = 'left' # THIS IS THE ACTION YOU'RE THINKING
