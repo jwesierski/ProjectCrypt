@@ -26,8 +26,8 @@ import time
 #This compares trains a model to which is saved in the new_models and is what we run testing against.
 #####Start of sentdex's data compilation#####################
 ACTIONS = ["left", "right", "none"]
-#reshape = (-1, 16, 128, 1)
-reshape = (-1, 16, 60)
+reshape = (-1, 16, 60, 1)
+#reshape = (-1, 16, 60, 1)
 
 def create_data(starting_dir="D:\\Projects\\ProjectCrypt\\BCI-master\\data_V3\\data"):
     training_data = {}
@@ -101,8 +101,9 @@ test_y = np.array(test_y)
 
 
 #Start of EEGNet########################################################################
-def EEGNet(nb_classes = 3, Samples = 128, Chans = 16,  #64 by default ask nao. #make nume
-#What is nb_classes? I think 3 for directions (like sentdexes), Yes ERP uses 4 for ears and visuals. Nao uses 4 for directions.
+def EEGNet(nb_classes = 3, Samples = 60, Chans = 16,
+#nb_classes should be 3 for directions (like sentdexes), Yes ERP uses 4 for ears and visuals.
+#samples is the frequency: EEGNet uses 128 - Sentdex uses 60
              dropoutRate = 0.5, kernLength = 64, F1 = 8,
              D = 2, F2 = 16, norm_rate = 0.25, dropoutType = 'Dropout'):
 ##ERP uses
@@ -149,7 +150,7 @@ def EEGNet(nb_classes = 3, Samples = 128, Chans = 16,  #64 by default ask nao. #
 
         return Model(inputs=input1, outputs=softmax)
 #end of eegnet####################################################
-model = EEGNet(nb_classes = 3, Samples = 128, Chans = 16,
+model = EEGNet(nb_classes = 3, Samples = 60, Chans = 16,
              dropoutRate = 0.5, kernLength = 64, F1 = 8,
              D = 2, F2 = 16, norm_rate = 0.25, dropoutType = 'Dropout')
 
@@ -158,27 +159,20 @@ model.compile(loss='categorical_crossentropy',
               metrics=['accuracy'])
               #also try with removing metrics
 
-#fitting the model from from sentdex#################
-epochs = 10  #one complete pass of the training dataset through the algorithm
-batch_size = 32
+#fitting the model from from sentdex#
+epochs = 5  #one complete pass of the training dataset through the algorithm
+batch_size = 16 #32 originally
 for epoch in range(epochs):
     model.fit(train_X, train_y, batch_size=batch_size, epochs=1, validation_data=(test_X, test_y))
     score = model.evaluate(test_X, test_y, batch_size=batch_size)
     #print(score)
+    MODEL_NAME = f"new_models/{round(score[1]*100,2)}-acc-64x3-batch-norm-{epoch}epoch-{int(time.time())}-loss-{round(score[0],2)}.model"
+    model.save(MODEL_NAME)
+print("saved:")
+print(MODEL_NAME)
 
 #ERP uses the below to fit their model
 #fittedModel = model.fit(X_train, Y_train, batch_size = 16, epochs = 300,
                         #verbose = 2, validation_data=(X_validate, Y_validate),
                         #callbacks=[checkpointer], class_weight = class_weights)
-
-#Nao uses
-#epochs = 200
-#model = EEGNet()
-#model = model.to(device)
-#model_path = 'model.pth'
-#optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
-
-MODEL_NAME = f"new_models/{round(score[1]*100,2)}-acc-64x3-batch-norm-{epoch}epoch-{int(time.time())}-loss-{round(score[0],2)}.model"
-model.save(MODEL_NAME)
-print("saved:")
-print(MODEL_NAME)
+#Nao uses epochs = 200
