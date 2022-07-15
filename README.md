@@ -21,10 +21,15 @@ For a full breakdown of our approach to this philosophical problem (and who _we_
 
 To begin Project Crypt we will use the **Ultracortex Mark IV** (a BCI worn on the right above) to output the brain activity of a few individuals while speaking. We are using this activity to try and find neural correlates of language. More specifically, we are looking for an area, thought, or way of thinking that can provide repeatable patterns of data corresponding to spoken words. 
 
-Like Google Translate, Project Crypt's algorithm will be sequence-to-sequence with Encoder-Decoder architecture. Facebook with UC San Francisco attempted to use such methods for the aforementioned "sentence translation" by comparing spoken scripts and neural signals obtained via electrocardiogram (on but not in the brain).
+Project Crypt's eventual algorithm will be sequence-to-sequence with Encoder-Decoder architecture.
 
-## Software
-Several of the files currently in repo are taken directly, as is, from the repo https://github.com/Sentdex/BCI, created by Sentdex. These files can be found under the folder `NeuralNetworks`as `training.py`and `training2.py`. These files provided ways to analyze data and run it through a Neural Network to produce a model.
+## File Cabinet
+Several of the files are taken directly, as is, from the repo https://github.com/Sentdex/BCI, created by Sentdex. 
+These files can be found under the folder `NeuralNetworks`as `training.py`and `training2.py`. 
+These files provided ways to analyze data and run it through a Convolutional Neural Network (CNN) to produce a model. His models were used for initial testing and can be found under `sentdex_models`.
+From these models testing and making data
+After testing his neural network on lead and author, jwesierski (pictured left above), we concluded that a more robust and reasearch grade CNN would better suited for our goal. `EEGNet.py`, `Shallow_Conv`, and `Deep_Conv` are implementations of the quality CNN's described in the paper [EEGNet: A compact Convolutional Neural Network for EEG-based Brain-Computer Interface](https://www.researchgate.net/publication/310953136_EEGNet_A_Compact_Convolutional_Network_for_EEG-based_Brain-Computer_Interfaces).
+  
 
 The model can then be run through `testing_and_making_data`....
 
