@@ -25,29 +25,19 @@ Project Crypt's eventual algorithm will be sequence-to-sequence with Encoder-Dec
 
 ## File Cabinet
 Several of the files are taken directly, as is, from the repo https://github.com/Sentdex/BCI, created by Sentdex. 
-These files can be found under the folder `NeuralNetworks`as `training.py`and `training2.py`. 
-These files provided ways to analyze data and run it through a Convolutional Neural Network (CNN) to produce a model. His models were used for initial testing and can be found under `sentdex_models`.
-From these models testing and making data
-After testing his neural network on lead and author, jwesierski (pictured left above), we concluded that a more robust and reasearch grade CNN would better suited for our goal. `EEGNet.py`, `Shallow_Conv`, and `Deep_Conv` are implementations of the quality CNN's described in the paper [EEGNet: A compact Convolutional Neural Network for EEG-based Brain-Computer Interface](https://www.researchgate.net/publication/310953136_EEGNet_A_Compact_Convolutional_Network_for_EEG-based_Brain-Computer_Interfaces).
-  
+These files can be found under the folder `NeuralNetworks`as `training.py`and, with feature clipping, `training2.py` . 
+They provide ways to analyze data and run it through a Convolutional Neural Network (CNN) to produce a model. His models were used for initial testing and can be found under `sentdex_models`.
 
-The model can then be run through `testing_and_making_data`....
+Recording data and testing models is done from `testing_and_making_data.py`. Per Sentdex: This is just here if you happen to have your own OpenBCI headset and want to actually play with the models and/or build on the neural activity dataset. Or if you just want to help audit/improve my code. This file will load in whatever model you wish to use, you will specify the action you intend to think ahead of time for the ACTION var, then you run the script. The environment will pop up and collect all of your FFT data, storing them to a numpy file in the dir named `data_v3`
 
-We tested these files several times and decided we wanted a better neural network...kept the data analysis aspect but anything can be used for that...
-We went onto 
+After testing his neural network on lead developer and author, jwesierski (pictured left above), we concluded that a more robust and reasearch grade CNN would better suited for our goal. `EEGNet.py`, `Shallow_Conv`, and `Deep_Conv` are implementations of the quality CNN's described in the paper [EEGNet: A compact Convolutional Neural Network for EEG-based Brain-Computer Interface](https://www.researchgate.net/publication/310953136_EEGNet_A_Compact_Convolutional_Network_for_EEG-based_Brain-Computer_Interfaces).
 
+`TrainingwithEEGNet.py` implements the above CNN, EEGNet, with the data creation/allocation aspects of the file `training.py`. However, sentdex's files are just being used for testing purposes and will be phased out with the expansion of words analyzed and testing application. Models created from EEGNet with jwesierski's neural data can be found in the folder `new_models`. The model is used in `testing_and_making_data.py`, to predict the direction being currently thought and move a block on the screen. Predictions are based on previous data files of neural activity recorded during the same thought direction.
 
-## File Cabinet:
+# The data
+Currently, the data available is 16-channel FFT 0-60Hz, sampled at a rate of about 25/second. Data is contained in directories labeled as `left`, `right`, or `none`. These directories contain numpy arrays of this FFT data collected where I was thinking of moving a square on the screen in this directions. 
 
-Some previous remarks related to the files in this discord:
-
-`training.py` - This is merely an example of training a model with this data. . 
-
-`analysis.py` - You can use this to run through validation data to see confusion matricies for your models on out of sample data.
-
-`testing_and_making_data.py` - This is just here if you happen to have your own OpenBCI headset and want to actually play with the model and/or build on the dataset. Or if you just want to help audit/improve my code. This file will load in whatever model you wish to use, you will specify the action you intend to think ahead of time for the `ACTION` var, then you run the script. The environment will pop up and collect all of your FFT data, storing them to a numpy file in the dir named whatever you said the `ACTION` thought was.
-
-For full directions check sentdexes...
+Each file is targeted to be 10 seconds long, which, at 25 iter/sec gives us, the 250 (though you should not depend/assume all files will be exactly 250 long). Then you have the number of channels (16), and then 60 values, for up to 60Hz. For example, if you do: 
 
 # Requirements
 Numpy
@@ -57,9 +47,5 @@ OpenBCI GUI (using the networking tab https://docs.openbci.com/docs/06Software/0
 
 
 
-# The data
 
-Currently, the data available is 16-channel FFT 0-60Hz, sampled at a rate of about 25/second. Data is contained in directories labeled as `left`, `right`, or `none`. These directories contain numpy arrays of this FFT data collected where I was thinking of moving a square on the screen in this directions. 
-
-Each file is targeted to be 10 seconds long, which, at 25 iter/sec gives us, the 250 (though you should not depend/assume all files will be exactly 250 long). Then you have the number of channels (16), and then 60 values, for up to 60Hz. For example, if you do: 
 
