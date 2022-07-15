@@ -34,18 +34,13 @@ After testing his neural network on lead developer and author, jwesierski (pictu
 
 `TrainingwithEEGNet.py` implements the above CNN, EEGNet, with the data creation/allocation aspects of the file `training.py`. However, sentdex's files are just being used for testing purposes and will be phased out with the expansion of words analyzed and testing application. Models created from EEGNet with jwesierski's neural data can be found in the folder `new_models`. The model is used in `testing_and_making_data.py`, to predict the direction being currently thought and move a block on the screen. Predictions are based on previous data files of neural activity recorded during the same thought direction.
 
-# The data
+## The data
 Currently, the data available is 16-channel FFT 0-60Hz, sampled at a rate of about 25/second. Data is contained in directories labeled as `left`, `right`, or `none`. These directories contain numpy arrays of this FFT data collected where I was thinking of moving a square on the screen in this directions. 
 
 Each file is targeted to be 10 seconds long, which, at 25 iter/sec gives us, the 250 (though you should not depend/assume all files will be exactly 250 long). Then you have the number of channels (16), and then 60 values, for up to 60Hz. For example, if you do: 
 
-# Requirements
+## Requirements
 Numpy
 TensorFlow 2.0. (you need 2.0 if you intend to load the models)
 pylsl (if you intend to run on an actual headset)
 OpenBCI GUI (using the networking tab https://docs.openbci.com/docs/06Software/01-OpenBCISoftware/GUIDocs)
-
-
-
-
-
