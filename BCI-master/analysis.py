@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 #Per sentdex: You can use this to run through validation data to see confusion matricies for your models on out of sample data.
 #see confusion matrix of data set using the trained model
 
-MODEL_NAME = "BCI-master\\models\\61.4-acc-loss-2.39-top.model"
+MODEL_NAME = "D:\\Projects\\ProjectCrypt\\BCI-master\\NeuralNetworks\\new_models\\(EEGNet)53.8-acc-64x3-batch-norm-0epoch-1658379033-loss-1.06.model"
+#\\D:\Projects\ProjectCrypt\BCI-master\NeuralNetworks\new_models\(SentNet)54.53-acc-64x3-batch-norm-4epoch-1658380602-loss-6.92.model
 
 CLIP = True  # if your model was trained with np.clip to clip  values
 CLIP_VAL = 10  # if above, what was the value +/-

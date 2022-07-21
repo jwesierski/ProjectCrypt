@@ -30,6 +30,7 @@ reshape = (-1, 16, 60, 1)
 #reshape = (-1, 16, 60, 1)
 
 def create_data(starting_dir="D:\\Projects\\ProjectCrypt\\BCI-master\\data_V3\\data"):
+#adding each 10 second FFT plot of brain waves in a nnumpy file from \\data into a training directory. n=30
     training_data = {}
     for action in ACTIONS:
         if action not in training_data:
@@ -37,7 +38,7 @@ def create_data(starting_dir="D:\\Projects\\ProjectCrypt\\BCI-master\\data_V3\\d
 
         data_dir = os.path.join(starting_dir,action)
         for item in os.listdir(data_dir):
-            #print(action, item)
+            #print(action, item) (left, #######.npy)
             data = np.load(os.path.join(data_dir, item))
             for item in data:
                 training_data[action].append(item)
@@ -45,13 +46,16 @@ def create_data(starting_dir="D:\\Projects\\ProjectCrypt\\BCI-master\\data_V3\\d
     lengths = [len(training_data[action]) for action in ACTIONS]
     print(lengths)
 
+#shuffles the data (always to be safe)
     for action in ACTIONS:
         np.random.shuffle(training_data[action])  # note that regular shuffle is GOOF af
         training_data[action] = training_data[action][:min(lengths)]
 
     lengths = [len(training_data[action]) for action in ACTIONS]
     print(lengths)
+
     # creating X, y
+    #each direction is assigned a numerical spot in a 3 obj array
     combined_data = []
     for action in ACTIONS:
         for data in training_data[action]:
@@ -65,7 +69,7 @@ def create_data(starting_dir="D:\\Projects\\ProjectCrypt\\BCI-master\\data_V3\\d
 
             elif action == "none":
                 combined_data.append([data, [0, 1, 0]])
-
+#shuffle and return
     np.random.shuffle(combined_data)
     print("length:",len(combined_data))
     return combined_data
@@ -79,7 +83,7 @@ for X, y in traindata:
     train_X.append(X)
     train_y.append(y)
 
-
+#asked sentdex why this needs to be broken into x & y (coordinates?)
 print("creating testing data")
 testdata = create_data(starting_dir="D:\\Projects\\ProjectCrypt\\BCI-master\\data_V3\\validation_data")
 test_X = []
@@ -166,6 +170,13 @@ for epoch in range(epochs):
     model.fit(train_X, train_y, batch_size=batch_size, epochs=1, validation_data=(test_X, test_y))
     score = model.evaluate(test_X, test_y, batch_size=batch_size)
     #print(score)
+
+#The loss function in a neural network quantifies the difference between the expected outcome
+#and the outcome produced by the machine learning model. From the loss function,
+#we can derive the gradients which are used to update the weights. The average over all losses constitutes the cost
+#https://programmathically.com/an-introduction-to-neural-network-loss-functions/#:~:text=The%20loss%20function%20in%20a,all%20losses%20constitutes%20the%20cost.
+#this is where the fun begins
+
     MODEL_NAME = f"new_models/{round(score[1]*100,2)}-acc-64x3-batch-norm-{epoch}epoch-{int(time.time())}-loss-{round(score[0],2)}.model"
     model.save(MODEL_NAME)
 print("saved:")
